@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">SafeGallery</string>
+    <string name="splash_text">MySafeGallery</string>
+    <string name="user_name_text">Enter username</string>
+    <string name="text_no_media">No Media Found…</string>
+    <string name="user_dob_text">Enter birth date</string>
+    <string name="user_password_text">Enter password</string>
+    <string name="user_security_text">Select security question</string>
+    <string name="user_security_answer">Enter answer</string>
+    <string name="text_new_password">Enter new password</string>
+    <string name="create_account_text">Create Account</string>
+    <string name="verify_account_text">Verify</string>
+    <string name="text_button_change_password">Change Password</string>
+    <string name="create_another_account_text">Create New Account</string>
+    <string name="login_account_text">Login</string>
+    <string name="actionBar_text_login_screen">Login Safe Gallery</string>
+    <string name="actionBar_text_main_screen">Safe Gallery</string>
+    <string name="actionBar_text_create_account_screen">Create Account</string>
+    <string name="actionBar_text_images_screen">Safe Images</string>
+    <string name="actionBar_text_videos_screen">Safe Videos</string>
+    <string name="actionBar_text_reset_password_screen">Password Reset</string>
+    <string name="password_reset_text">Reset Password</string>
+    <string name="security_question_1">What is the name of your childhood friend?</string>
+    <string name="security_question_2">What is your favorite color?</string>
+    <string name="security_question_3">What is the name of your first school?</string>
+    <string name="security_question_4">What is the name of your favorite subject?</string>
+    <string name="security_question_5">What is the name of four favorite fruit?</string>
+    <string name="text_import_images">Import Images</string>
+    <string name="text_import_videos">Import Videos</string>
+    <string name="text_images">CHECK SAFE IMAGES</string>
+    <string name="text_videos">CHECK SAFE VIDEOS</string>
+
+
+</resources>
