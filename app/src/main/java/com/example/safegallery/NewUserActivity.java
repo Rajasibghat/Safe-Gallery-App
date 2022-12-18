@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -11,19 +13,26 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import com.example.safegallery.databinding.ActivityNewUserBinding;
+import com.example.safegallery.models.User;
+import com.example.safegallery.utils.Constants;
 import com.example.safegallery.utils.PermissionsHelper;
 import com.example.safegallery.utils.SpinnerDataProvider;
+import com.example.safegallery.utils.databasehelper.CRUDHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.UUID;
 
 public class NewUserActivity extends AppCompatActivity {
     private ActivityNewUserBinding binding;
     private Calendar calendarDate=Calendar.getInstance();
+    private CRUDHelper crudHelper;
+    private SharedPreferences.Editor preferencesEditor;
 
 
     @Override
@@ -41,6 +50,12 @@ public class NewUserActivity extends AppCompatActivity {
                         100);
             }
         }
+        crudHelper=new CRUDHelper(this);
+        crudHelper.openDataBase();
+        preferencesEditor=getSharedPreferences(Constants.PREF_FILE_NAME,MODE_PRIVATE).edit();
+
+
+
         binding.inputDOB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,18 +92,43 @@ public class NewUserActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(validUser()){
-
+                    User user=new User(
+                            binding.inputUserName.getText().toString(),
+                            binding.inputDOB.getText().toString(),
+                            binding.inputPassword.getText().toString(),
+                            binding.spinnerSecurityQuestion.getText().toString(),
+                            binding.inputAnswer.getText().toString()
+                    );
+                    user.setUserID(UUID.randomUUID().toString());
+                    if(!crudHelper.checkUserAlreadyExists(
+                            binding.inputUserName.getText().toString(),
+                            binding.inputPassword.getText().toString()
+                    )){
+                        crudHelper.insertUser(user);
+                        Intent intent =new Intent(NewUserActivity.this,MainActivity.class);
+                        intent.putExtra(Constants.KEY_INTENT_USER,user);
+                        preferencesEditor.putBoolean(Constants.USER_EXISTS_KEY,true);
+                        preferencesEditor.putString(Constants.KEY_USER_NAME,user.getUserName());
+                        preferencesEditor.apply();
+                        startActivity(intent);
+                        finish();
+                    }
+                    else{
+                        Toast.makeText(NewUserActivity.this, "User Already Exists", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
 
-
-
-
-
-
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(crudHelper!=null){
+            crudHelper.closeDataBase();
+        }
+    }
 
     private Boolean validUser() {
         boolean validity;
