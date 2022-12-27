@@ -1,5 +1,6 @@
 package com.example.safegallery.utils.databasehelper;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -45,6 +46,67 @@ public class CRUDHelper{
         cursor.close();
         return exists;
     }
+
+
+    @SuppressLint("Range")
+    public User getUser(String username, String password){
+        User user = new User();
+        String[] args=new String[]{username,password};
+        Cursor cursor=sqLiteDatabase.query(Constants.TB_NAME,
+                new String[]{
+                        Constants.COL_1,Constants.COL_2,Constants.COL_3,Constants.COL_4,Constants.COL_5,Constants.COL_6
+                },Constants.COL_2+" =? AND "+Constants.COL_4+" =?",args,null,null,null);
+        while (cursor.moveToNext()) {
+            user.setUserID(cursor.getString(cursor.getColumnIndex(Constants.COL_1)));
+            user.setUserName(cursor.getString(cursor.getColumnIndex(Constants.COL_2)));
+            user.setUserDOB(cursor.getString(cursor.getColumnIndex(Constants.COL_3)));
+            user.setUserPassword(cursor.getString(cursor.getColumnIndex(Constants.COL_4)));
+            user.setUserQuestion(cursor.getString(cursor.getColumnIndex(Constants.COL_5)));
+            user.setUserAnswer(cursor.getString(cursor.getColumnIndex(Constants.COL_6)));
+        }
+        cursor.close();
+        return user;
+    }
+
+
+
+    @SuppressLint("Range")
+    public User checkRecordExists(String name,String dob, String question, String answer){
+        User user = new User();
+        String[] args=new String[]{name,dob,question,answer};
+        Cursor cursor=sqLiteDatabase.query(Constants.TB_NAME,
+                new String[]{
+                        Constants.COL_1,Constants.COL_2,Constants.COL_3,Constants.COL_4,Constants.COL_5,Constants.COL_6
+                },
+                Constants.COL_2+" =? AND "+Constants.COL_3+
+                        " =? AND "+Constants.COL_5+" =? AND "+Constants.COL_6+" =?",
+                args,null,null,null);
+        while (cursor.moveToNext()){
+            user.setUserID(cursor.getString(cursor.getColumnIndex(Constants.COL_1)));
+            user.setUserName(cursor.getString(cursor.getColumnIndex(Constants.COL_2)));
+            user.setUserDOB(cursor.getString(cursor.getColumnIndex(Constants.COL_3)));
+            user.setUserPassword(cursor.getString(cursor.getColumnIndex(Constants.COL_4)));
+            user.setUserQuestion(cursor.getString(cursor.getColumnIndex(Constants.COL_5)));
+            user.setUserAnswer(cursor.getString(cursor.getColumnIndex(Constants.COL_6)));
+        }
+        cursor.close();
+        return user;
+    }
+    public int updateUser(User user,String newPassword){
+        ContentValues contentValues=new ContentValues();
+        contentValues.put(Constants.COL_4,newPassword);
+        return sqLiteDatabase.update(Constants.TB_NAME,contentValues,Constants.COL_4+" =?",
+                new String[]{user.getUserPassword()});
+    }
+
+
+
+
+
+
+
+
+
 
     public void openDataBase(){
         sqLiteDatabase=dataBaseHelper.getWritableDatabase();
