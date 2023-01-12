@@ -27,9 +27,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
     private Calendar calendarDate = Calendar.getInstance();
     private User user;
 
-    // comment1
-    // comment2
-    // comment3
+    // feature test
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
