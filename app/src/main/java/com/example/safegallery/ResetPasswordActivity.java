@@ -42,6 +42,8 @@ public class ResetPasswordActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,list);
         binding.spinnerSecurityQuestion.setAdapter(adapter);
 
+        Toast.makeText(this, "Test feature", Toast.LENGTH_SHORT).show();
+
         binding.btnVerifyAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
