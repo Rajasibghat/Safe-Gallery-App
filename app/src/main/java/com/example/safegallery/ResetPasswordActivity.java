@@ -29,6 +29,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
     // comment1
     // comment2
+    // comment3
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
