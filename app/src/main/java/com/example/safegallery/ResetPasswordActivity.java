@@ -24,7 +24,7 @@ import java.util.Locale;
 public class ResetPasswordActivity extends AppCompatActivity {
     private ActivityResetPasswordBinding binding;
     private CRUDHelper crudHelper;
-    private Calendar calendarDate=Calendar.getInstance();
+    private Calendar calendarDate = Calendar.getInstance();
     private User user;
 
     // comment1
@@ -34,12 +34,12 @@ public class ResetPasswordActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding=ActivityResetPasswordBinding.inflate(getLayoutInflater());
+        binding = ActivityResetPasswordBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setTitle(getResources().getString(R.string.actionBar_text_reset_password_screen));
-        crudHelper=new CRUDHelper(this);
-        ArrayList<String> list= SpinnerDataProvider.getSpinnerData(this);
-        ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,list);
+        crudHelper = new CRUDHelper(this);
+        ArrayList<String> list = SpinnerDataProvider.getSpinnerData(this);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
         binding.spinnerSecurityQuestion.setAdapter(adapter);
 
         Toast.makeText(this, "Test feature", Toast.LENGTH_SHORT).show();
@@ -47,17 +47,17 @@ public class ResetPasswordActivity extends AppCompatActivity {
         binding.btnVerifyAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(validUser()){
-                    String name=binding.inputUserName.getText().toString();
-                    String dob=binding.inputDOB.getText().toString();
-                    String question=binding.spinnerSecurityQuestion.getText().toString();
-                    String answer=binding.inputAnswer.getText().toString();
-                    user=crudHelper.checkRecordExists(name,dob,question,answer);
-                    if(user!=null){
+                if (validUser()) {
+                    String name = binding.inputUserName.getText().toString();
+                    String dob = binding.inputDOB.getText().toString();
+                    String question = binding.spinnerSecurityQuestion.getText().toString();
+                    String answer = binding.inputAnswer.getText().toString();
+                    user = crudHelper.checkRecordExists(name, dob, question, answer);
+                    if (user != null) {
                         binding.inputLayoutNewPassword.setVisibility(View.VISIBLE);
                         binding.btnChangePassword.setVisibility(View.VISIBLE);
-                    }else{
-                        Snackbar.make(v,"User doesn't exists",Snackbar.LENGTH_LONG).show();
+                    } else {
+                        Snackbar.make(v, "User doesn't exists", Snackbar.LENGTH_LONG).show();
                         binding.inputLayoutNewPassword.setVisibility(View.GONE);
                         binding.btnChangePassword.setVisibility(View.GONE);
                     }
@@ -67,20 +67,20 @@ public class ResetPasswordActivity extends AppCompatActivity {
         binding.btnChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String newPassword=binding.inputNewPassword.getText().toString();
-                if(newPassword.trim().length()==0){
+                String newPassword = binding.inputNewPassword.getText().toString();
+                if (newPassword.trim().length() == 0) {
                     binding.inputLayoutNewPassword.setError("Password is empty");
                     binding.inputLayoutNewPassword.requestFocus();
                     return;
-                }else if(newPassword.length()<8){
+                } else if (newPassword.length() < 8) {
                     binding.inputLayoutNewPassword.setError("Password too short");
                     binding.inputLayoutNewPassword.requestFocus();
                     return;
-                }else{
-                    int result=crudHelper.updateUser(user,newPassword);
-                    if(result==0){
+                } else {
+                    int result = crudHelper.updateUser(user, newPassword);
+                    if (result == 0) {
                         Toast.makeText(ResetPasswordActivity.this, "Unable to update Password", Toast.LENGTH_SHORT).show();
-                    }else{
+                    } else {
                         Toast.makeText(ResetPasswordActivity.this, "Password Changed", Toast.LENGTH_SHORT).show();
                         finish();
                     }
@@ -90,63 +90,57 @@ public class ResetPasswordActivity extends AppCompatActivity {
         binding.inputDOB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatePickerDialog.OnDateSetListener listener =new DatePickerDialog.OnDateSetListener(){
+                DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        calendarDate.set(Calendar.DAY_OF_MONTH,dayOfMonth);
-                        calendarDate.set(Calendar.MONTH,month);
-                        calendarDate.set(Calendar.YEAR,year);
+                        calendarDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                        calendarDate.set(Calendar.MONTH, month);
+                        calendarDate.set(Calendar.YEAR, year);
                         updateInputDOB();
                     }
                 };
                 new DatePickerDialog(ResetPasswordActivity.this,
-                        listener,calendarDate.get(Calendar.YEAR),calendarDate.get(Calendar.MONTH),
+                        listener, calendarDate.get(Calendar.YEAR), calendarDate.get(Calendar.MONTH),
                         calendarDate.get(Calendar.DAY_OF_MONTH)
                 ).show();
             }
         });
 
-
-
-
-
-
-
     }
-
-
 
     private Boolean validUser() {
         boolean validity;
-        String userName=binding.inputUserName.getText().toString();
-        String userDOB=binding.inputDOB.getText().toString();
-        String userQuestion=binding.spinnerSecurityQuestion.getText().toString();
-        String answer=binding.inputAnswer.getText().toString();
-        if(userName.trim().length()==0){
+        String userName = binding.inputUserName.getText().toString();
+        String userDOB = binding.inputDOB.getText().toString();
+        String userQuestion = binding.spinnerSecurityQuestion.getText().toString();
+        String answer = binding.inputAnswer.getText().toString();
+        if (userName.trim().length() == 0) {
             binding.inputUserName.setError("User name cannot be empty");
             binding.inputUserName.requestFocus();
-            validity=false;
-        }else if(userDOB.trim().length()==0){
+            validity = false;
+        } else if (userDOB.trim().length() == 0) {
             binding.inputDOB.setError("User dob is empty");
-            binding.inputDOB.requestFocus();;
-            validity= false;
-        }else if(userQuestion.equals(getResources().getString(R.string.user_security_text))){
+            binding.inputDOB.requestFocus();
+            ;
+            validity = false;
+        } else if (userQuestion.equals(getResources().getString(R.string.user_security_text))) {
             binding.spinnerSecurityQuestion.setError("Select a security question");
             binding.spinnerSecurityQuestion.requestFocus();
-            validity= false;
-        }else if(answer.trim().length()==0){
+            validity = false;
+        } else if (answer.trim().length() == 0) {
             binding.inputAnswer.setError("Answer is empty");
-            binding.inputAnswer.requestFocus();;
-            validity= false;
-        }else{
-            validity= true;
+            binding.inputAnswer.requestFocus();
+            ;
+            validity = false;
+        } else {
+            validity = true;
         }
         return validity;
     }
 
-    private void updateInputDOB(){
-        String formatString="dd/MM/yyyy";
-        SimpleDateFormat dateFormat=new SimpleDateFormat(formatString, Locale.US);
+    private void updateInputDOB() {
+        String formatString = "dd/MM/yyyy";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(formatString, Locale.US);
         binding.inputDOB.setText(dateFormat.format(calendarDate.getTime()));
     }
 
